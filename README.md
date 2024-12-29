@@ -105,7 +105,7 @@ To train the model, follow the steps below:
 
 Below is the accuracy graph for the model after training. It shows the training and validation accuracy over the epochs:
 
-![Accuracy Graph](images/accuracy_graph.png)
+![Accuracy Graph](https://github.com/vxrnxthx/ASLtoEnglishAndOtherIndianLanguages/blob/main/Figure_1.png)
 
 ## Conclusion
 
