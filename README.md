@@ -1,112 +1,138 @@
+
+
 # ASL to English And Other Indian Languages
 
-
 ## Contents
-1. [Overview](#overview)
-2. [File Descriptions](#file-descriptions)
-   - [handPredict.py](#handpredictpy)
-   - [aslVersion3.py](#aslversion3py)
-   - [aslFinalMain.py](#aslfinalmainpy)
-3. [Model Architecture](#model-architecture)
-4. [How to Run the Project](#how-to-run-the-project)
-5. [Training the Model](#training-the-model)
-6. [Graphical Representation](#graphical-representation)
-7. [Conclusion](#conclusion)
+1. [Overview](#overview)  
+2. [File Descriptions](#file-descriptions)  
+   - [handPredict.py](#handpredictpy)  
+   - [aslVersion3.py](#aslversion3py)  
+   - [aslFinalMain.py](#aslfinalmainpy)  
+3. [Model Architecture](#model-architecture)  
+4. [How to Run the Project](#how-to-run-the-project)  
+5. [Training the Model](#training-the-model)  
+6. [Graphical Representation](#graphical-representation)  
+7. [Conclusion](#conclusion)  
 
 ---
 
-## Overview
+## Overview  
 
-This project is an American Sign Language (ASL) Translator that uses a pre-trained model to recognize and translate hand gestures into English and other South Indian languages. The application consists of three primary Python files: `handPredict.py`, `aslVersion3.py`, and `aslFinalMain.py`. The model has been trained using a Convolutional Neural Network (CNN) on a dataset of ASL alphabet images.
+This project is an **American Sign Language (ASL) Translator** that uses a **pre-trained Convolutional Neural Network (CNN) model** to recognize hand gestures and translate them into **English and South Indian languages**. It also includes features such as **text-to-speech (TTS) conversion**, **auto-correction of recognized words**, and a **GUI-based interface**.  
 
----
-
-## File Descriptions
-
-### handPredict.py
-
-This file contains the logic for recognizing ASL letters. It loads the trained model, processes the input image, and predicts the corresponding ASL letter. It uses the following steps:
-1. Pre-processes the image (resizing and normalizing).
-2. Makes a prediction using the trained model.
-3. Returns the predicted letter.
-
-### aslVersion3.py
-
-This file is an extension of `handPredict.py` with added functionality for converting ASL letters to English and other South Indian languages. It also includes an auto-correction feature to handle slight errors in recognition. The key features are:
-1. It integrates the auto-correction function to ensure more accurate translations.
-2. It provides an interface to translate the recognized sign into multiple languages.
-
-### aslFinalMain.py
-
-This file is similar to `aslVersion3.py` but without the auto-correction feature. It translates ASL gestures into English and South Indian languages, focusing solely on accurate translation without handling small errors in gesture recognition.
+The system utilizes **MediaPipe** for real-time hand tracking and **Google Translate API** for language conversion.  
 
 ---
 
-## Model Architecture
+## File Descriptions  
 
-The model used for ASL recognition is a Convolutional Neural Network (CNN) built using TensorFlow/Keras. Below is a breakdown of the layers:
+### handPredict.py  
 
-1. **Input Layer**: The input shape is (64, 64, 1), which represents grayscale images of size 64x64.
-2. **Convolutional Layers**:
-   - The first convolutional layer uses 128 filters of size (3x3) with ReLU activation.
-   - The second convolutional layer uses 256 filters of size (3x3) with ReLU activation.
-   - The third convolutional layer uses 256 filters of size (3x3) with ReLU activation.
-   - The fourth convolutional layer uses 512 filters of size (3x3) with ReLU activation.
-   - The fifth convolutional layer uses 512 filters of size (3x3) with ReLU activation.
-3. **MaxPooling Layers**: After each convolutional layer, a max-pooling layer of size (2x2) is applied to down-sample the image.
-4. **Dropout Layers**: Dropout layers with a rate of 0.5 are used to prevent overfitting.
-5. **Flatten Layer**: The output is flattened into a one-dimensional vector.
-6. **Fully Connected Layer**: A dense layer with 1024 neurons and ReLU activation is used.
-7. **Output Layer**: The final output layer has 29 neurons with softmax activation to classify the 29 ASL alphabet signs.
+This file handles the core **ASL letter recognition**. It:  
+1. Loads the pre-trained model (`model_trained.h5`).  
+2. Uses **MediaPipe** to track hand landmarks.  
+3. Extracts the hand region and processes it using **edge detection**.  
+4. Predicts the corresponding ASL letter using the CNN model.  
 
 ---
 
-## How to Run the Project
+### aslVersion3.py  
 
-To run the ASL Translator, follow these steps:
+This file extends `handPredict.py` by adding:  
+1. **Multi-language translation** using the Google Translate API.  
+2. **Auto-correction of words** using the `Auto_Correct_SpellChecker` module.  
+3. **Text-to-Speech (TTS)** conversion using `gTTS` and `pygame`.  
+4. A **dark-themed GUI** for user-friendly interaction.  
 
-1. **Set up the environment**:
-   - Install necessary dependencies:
-     ```bash
-     pip install -r requirements.txt
-     ```
-   
-2. **Running the Translation**:
-   - Run the desired Python file:
-     - For letter prediction: 
-       ```bash
-       python handPredict.py
-       ```
-     - For translation with auto-correction: 
-       ```bash
-       python aslVersion3.py
-       ```
-     - For translation without auto-correction:
-       ```bash
-       python aslFinalMain.py
-       ```
+The GUI allows users to:  
+- See recognized ASL letters.  
+- Form words and sentences.  
+- Translate sentences into **multiple Indian languages**.  
+- Hear the translated text using the **Text-to-Speech feature**.  
 
 ---
 
-## Training the Model
+### aslFinalMain.py  
 
-To train the model, follow the steps below:
+This file is similar to `aslVersion3.py` but **does not include auto-correction**.  
+- It recognizes ASL letters and translates them into multiple languages.  
+- Provides real-time gesture recognition and translation.  
+- Includes a **dark-themed user interface**.  
 
-1. **Prepare the Data**: Collect and preprocess the ASL images. <br> You can download the dataset from: https://www.kaggle.com/grassknoted/asl-alphabet
-2. **Set Up Training**:
-   - Ensure the images are labeled and placed in the correct folder structure.
-   - Use the `train.py` file to load and preprocess the data.
-   - The model is trained using the Adam optimizer and categorical cross-entropy loss function.
-   
-3. **Run the Training Script**:
-   ```bash
-   python train.py
-## Graph representation
+---
 
-Below is the accuracy graph for the model after training. It shows the training and validation accuracy over the epochs:
+## Model Architecture  
 
-![Accuracy Graph](https://github.com/vxrnxthx/ASLtoEnglishAndOtherIndianLanguages/blob/main/Figure_1.png)
+The ASL recognition model is a **Convolutional Neural Network (CNN)** built with **TensorFlow/Keras**.  
 
-## Conclusion
+### **Model Layers**  
+1. **Input Layer**: 64×64 grayscale images of ASL signs.  
+2. **Convolutional Layers**:  
+   - 128 filters (3×3) – ReLU  
+   - 256 filters (3×3) – ReLU  
+   - 256 filters (3×3) – ReLU  
+   - 512 filters (3×3) – ReLU  
+   - 512 filters (3×3) – ReLU  
+3. **MaxPooling Layers**: (2×2) after each convolutional layer.  
+4. **Dropout Layers**: Dropout rate of **0.5** to prevent overfitting.  
+5. **Flatten Layer**: Converts extracted features into a **1D vector**.  
+6. **Fully Connected Layer**: 1024 neurons, ReLU activation.  
+7. **Output Layer**: 29 neurons (one for each ASL alphabet sign) with **softmax activation**.  
 
-The ASL Translator is an efficient solution for translating American Sign Language into readable text. The model leverages advanced deep learning techniques and can recognize hand gestures with high accuracy. With further refinement and training, it can be extended to support a wider range of gestures and languages.
+---
+
+## How to Run the Project  
+
+### **1. Set Up the Environment**  
+Install the required dependencies using:  
+```bash
+pip install -r requirements.txt
+```
+
+### **2. Run the Application**  
+
+- **For ASL letter prediction only:**  
+  ```bash
+  python handPredict.py
+  ```
+- **For ASL translation with auto-correction:**  
+  ```bash
+  python aslVersion3.py
+  ```
+- **For ASL translation without auto-correction:**  
+  ```bash
+  python aslFinalMain.py
+  ```
+
+---
+
+## Training the Model  
+
+### **1. Prepare the Dataset**  
+Download the ASL alphabet dataset:  
+[ASL Alphabet Dataset - Kaggle](https://www.kaggle.com/grassknoted/asl-alphabet)  
+
+Ensure the dataset is structured correctly before training.  
+
+### **2. Train the Model**  
+Run the training script:  
+```bash
+python train.py
+```
+This will train a CNN model to recognize ASL signs.  
+
+---
+
+## Graphical Representation  
+
+Below is the **training accuracy graph** for the model, showing how well the model improves over epochs:  
+
+![Accuracy Graph](https://github.com/vxrnxthx/ASLtoEnglishAndOtherIndianLanguages/blob/main/Figure_1.png)  
+
+---
+
+## Conclusion  
+
+This **ASL Translator** is an efficient solution for converting sign language into readable text and speech. It integrates **deep learning, real-time image processing, language translation, and text-to-speech technologies** to create a highly interactive and useful application.  
+
+With further refinements, the model can be **expanded to recognize full words and sentences**, making it an invaluable tool for **deaf and mute communities** worldwide.  
